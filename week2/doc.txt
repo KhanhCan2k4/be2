@@ -1,0 +1,12 @@
+    CONTROOLLER
+
+- *Resource Controller
+    php artisan make:controller <Name>Controller --resources
+    Route::resource(<route>, XController::class);
+        /products -> index
+        /products/1 -> show
+        /products/create -> create
+        /products/edit/1 -> edit
+- php artisan make:migration <name>
+- php artisan make:model <Name>
+- Schema::defaultStringLength(191)
