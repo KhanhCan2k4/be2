@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     function index() {
-        $products = Product::all();
+        $products = Product::paginate(2);
         foreach ($products as $product) {
             $product['description'] = trim(strip_tags($product['description']));
             

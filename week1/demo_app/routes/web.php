@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use Ramsey\Uuid\Type\Integer;
 
@@ -19,7 +21,7 @@ use Ramsey\Uuid\Type\Integer;
 Route::get("/", [HomeController::class, "index"])->name('home');
 
 Route::get("/shop/{id}/{name}", function (int $id, string $name) {
-    return view('shop', ['id'=> $id,'name' => $name]);
+    return view('shop', ['id' => $id, 'name' => $name]);
 })->name('shop');
 
 Route::get("/contact", function () {
@@ -27,3 +29,5 @@ Route::get("/contact", function () {
 })->name('contact');
 
 Route::resource('products', ProductController::class);
+
+Route::resource('categories', CategoryController::class);

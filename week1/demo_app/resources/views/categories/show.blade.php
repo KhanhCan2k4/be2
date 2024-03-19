@@ -1,5 +1,10 @@
 <x-layout>
+    <x:slot:activeLink>
+        {{ $activeLink }}
+    </x:slot:activeLink>
+
     <div class="container">
+        <h1>{{ $category->name }}</h1>
         <div class="row row-cols-1 row-cols-md-4 g-4">
             @foreach ($products as $product)
                 <div class="col-md-4">
@@ -14,6 +19,14 @@
                             <p>
                                 <strong>$</strong>{{ $product['price'] }}
                             </p>
+                            @php 
+                                $product['description'] = trim(strip_tags($product['description']));
+                                
+                                if (strlen($product['description'] ) > 100) {
+                                    # code...
+                                    $product['description']  = mb_substr($product['description'] , 0, mb_strpos($product['description'] , ' ', 100));
+                                }
+                            @endphp
                             <p class="card-text " style="font-size: 16px">
                                 {!!  $product['description'] !!}
                             </p>
