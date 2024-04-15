@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Models\Category;
@@ -28,6 +29,16 @@ Route::get("/contact", function () {
     return view('contact');
 })->name('contact');
 
-Route::resource('products', ProductController::class);
+Route::get('products', [ProductController::class, "indexList"]);
+Route::get('products/{id}', [ProductController::class, "showProduct"])->name('products.showProduct');
 
 Route::resource('categories', CategoryController::class);
+
+Route::resource('comments', CommentController::class);
+
+Route::get("/admin", [HomeController::class, "indexAdmin"])->name('home.admin');
+
+
+Route::prefix('admin')->group(function() {
+    Route::resource('products', ProductController::class);
+});

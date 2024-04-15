@@ -7,7 +7,7 @@
                         <img src="{{ asset('/images/'. $product['image']) }}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">
-                                <a href="product.php?id={{ $product['id'] }}">
+                                <a href="{{ Route("products.show", $product['id'])  }}">
                                     {{ $product['name'] }}
                                 </a>
                             </h5>
