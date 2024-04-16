@@ -14,6 +14,10 @@ class Comment extends Model
         return $this->belongsTo(Product::class);
     }
 
+    function user() : BelongsTo {
+        return $this->belongsTo(User::class);
+    }
+
     protected $fillable = [
         'content',
         'rate',

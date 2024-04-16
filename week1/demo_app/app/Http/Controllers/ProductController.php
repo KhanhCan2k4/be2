@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use League\CommonMark\Extension\DescriptionList\Node\Description;
 
 class ProductController extends Controller
@@ -87,7 +88,8 @@ class ProductController extends Controller
     public function showProduct(string $id)
     {
         $product = Product::find($id);
-        return view('products.show', ['product' => $product]);
+        $user_id = Auth::user()->id ?? 0;
+        return view('products.show', ['product' => $product, 'user_id' => $user_id]);
     }
 
     /**

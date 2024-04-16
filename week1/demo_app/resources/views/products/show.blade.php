@@ -21,19 +21,19 @@
             </div>
             <div class="d-grid gap-2 mt-5" style="font-size: 12px">
                 @if ($message = Session::get('success'))
-                    <span class="alert alert-success">{{ $message }}</span>
+                    {{-- <span class="alert alert-success">{{ $message }}</span> --}}
                 @endif
 
-                @error ('rate')
+                @error('rate')
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
-                @error ('content')
+                @error('content')
                     <span class="alert alert-danger">{{ $message }}</span>
                 @enderror
 
-                @foreach (array_reverse($product->comments->toArray(), true) as $comment)
-                    <span><b>User: </b><i>root</i></span>
+                @foreach ($product->comments as $comment)
+                    <span><b>User: </b><i>{{ $comment['user']['name'] ?? 'unknown' }}</i></span>
                     <span class="text-warning">
                         @for ($i = 1; $i <= $comment['rate']; $i++)
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -51,11 +51,14 @@
                             </svg>
                         @endfor
                     </span>
-                    <form onsubmit="return confirm('Do you want to remove?')" action="{{ Route('comments.destroy', $comment['id']) }}" method="POST">
+                    <form onsubmit="return confirm('Do you want to remove?')"
+                        action="{{ Route('comments.destroy', $comment['id']) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <input type="hidden" name="id" value="{{ $comment['id'] }}">
-                        <button type="submit" class="btn btn-outline-danger">Remove</button>
+                        @if ($comment['user']['id'] == $user_id)
+                            <input type="hidden" name="user_id" value="{{ $comment['user']['id'] }}">
+                            <button type="submit" class="btn btn-outline-danger">Remove</button>
+                        @endif
                     </form>
                     <p>{{ $comment['content'] }}</p>
                 @endforeach

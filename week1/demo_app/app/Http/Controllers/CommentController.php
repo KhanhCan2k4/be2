@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -49,6 +50,7 @@ class CommentController extends Controller
         // ]);
 
         $comment = new Comment($validated);
+        $comment->user_id = Auth::id();
 
         // $comment = new Comment($request->all());
 
@@ -56,8 +58,8 @@ class CommentController extends Controller
 
         $product->comments()->save($comment);
 
-        return redirect()->route("products.show", $request->productId)
-                    ->with("success..", "Bình luận thành công!");
+        return redirect()->route("products.showProduct", $request->productId)
+            ->with("success..", "Bình luận thành công!");
     }
 
     /**
@@ -87,11 +89,17 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy(Request $request, string $id)
     {
-        $comment->delete();
+        $comment = Comment::find($id);
+        if ($request->user_id == $comment->user_id) {
+            $comment->delete();
+
+            return back()
+                ->with("success", "Xoá bình luận thành công!");
+        }
 
         return back()
-                    ->with("success", "Xoá bình luận thành công!");
+            ->with("error", "Xoá bình luận thất bại!");
     }
 }
